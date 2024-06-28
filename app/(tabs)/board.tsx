@@ -1,13 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Image, Platform, TouchableOpacity, RefreshControl } from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedView } from '../../components/ThemedView';
 import Animated from 'react-native-reanimated';
-import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
 import { useCallback, useEffect, useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
 import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
@@ -129,7 +125,7 @@ export default function TabTwoScreen() {
                     {item.title}
                   </ThemedText>
                   <ThemedText style={{fontSize:15}}>
-                    {item.content}
+                    {item.content.replaceAll("<br>","\n")}
                   </ThemedText>
                   <ThemedText style={{fontSize:13}}>
                     {item.author} - {elapsedTime(item.createdAt)}
@@ -173,7 +169,7 @@ export default function TabTwoScreen() {
               marginTop: 0,
               fontWeight:"bold"
             }}>
-              {deatilcontent}
+              {deatilcontent.replaceAll("<br>","\n")}
             </ThemedText>
             
             

@@ -3,20 +3,14 @@
     "version": ">= 10.0.3"
   },
   "build": {
-    
     "development": {
-      "android": {
-        "buildType": "apk"
-      }
+      "developmentClient": true,
+      "distribution": "internal"
     },
     "preview": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
+      "distribution": "internal"
     },
-    "production": {
-      "developmentClient": true
-    }
+    "production": {}
   },
   "submit": {
     "production": {}

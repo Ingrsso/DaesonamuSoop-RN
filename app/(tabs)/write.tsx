@@ -1,16 +1,13 @@
 import { Image, StyleSheet, Platform, View, TouchableOpacity, TextInput, useColorScheme, Alert, Pressable, Keyboard} from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import Animated from 'react-native-reanimated';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedView } from '../../components/ThemedView';
 import {useNavigation} from '@react-navigation/native';
 import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
 import { useState } from 'react';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import useUserStore from '@/stores/userIdStore';
+import useUserStore from '../../stores/userIdStore';
 
 
 import axios from "axios";
