@@ -10,6 +10,10 @@ import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Update from "expo-updates";
 
+import axios from 'axios';
+
+
+
 export default function Main() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -30,6 +34,22 @@ export default function Main() {
       setFridayMonth(`${nextFridy.split("/")[0]}월 ${nextFridy.split("/")[1]}일`)
       setFridayCount(daysUntilNextFriday)
     },[])
+
+    const [isTimeTableLoading, setLoadingStatus] = useState(false);
+
+    const [timeTable, setTimetable] = useState([]);
+
+    useEffect(()=> {
+      fetch('https://comci.koreacentral.cloudapp.azure.com/api/getTimetable?code=20999&grade=1&classNum=1')
+      .then(response => response.json())
+      .then(data => {
+        
+        setTimetable(data.data.timetable)
+        setLoadingStatus(true)
+
+      })
+    },[timeTable])
+    
 
     return (
       <ThemedView>
@@ -54,11 +74,111 @@ export default function Main() {
                 {fridayCounter != 7 ? <>D - {fridayCounter}</> : <>D - Day</>}
               </Text>
             </View>
-           
+            <ThemedView style={{flexDirection:"row", gap:30, justifyContent:'center'}}>
+              { isTimeTableLoading ? 
+              <>
+              <ThemedView>
+                    { timeTable != undefined ?
+                        Object.values(timeTable[0]).map((value:any, i) => 
+                          
+                          (
+                            <ThemedView key={i} style={{padding:10}}>
+                              <ThemedText>
+                                {value.subject}
+                              </ThemedText>
+                            </ThemedView>
+                            
+                          )
+                        
+                        )
+                        : <></>
+                    }  
+                </ThemedView>
+                <ThemedView>
+                    { timeTable != undefined ?
+
+                        Object.values(timeTable[1]).map((value:any, i) => 
+                          
+                          (
+                            <ThemedView key={i} style={{padding:10}}>
+                              <ThemedText>
+                                {value.subject}
+                              </ThemedText>
+                            </ThemedView>
+                            
+                          )
+                        
+                        )
+                        : <></>
+                    }  
+                </ThemedView>
+                <ThemedView>
+                    { timeTable != undefined ?
+
+                        Object.values(timeTable[2]).map((value:any, i) => 
+                          
+                          (
+                            <ThemedView key={i} style={{padding:10}}>
+                              <ThemedText>
+                                {value.subject}
+                              </ThemedText>
+                            </ThemedView>
+                            
+                          )
+                        
+                        )
+                        : <></>
+                    }  
+                </ThemedView>
+                <ThemedView>
+                    { timeTable != undefined ?
+
+                        Object.values(timeTable[3]).map((value:any, i) => 
+                          
+                          (
+                            <ThemedView key={i} style={{padding:10}}>
+                              <ThemedText>
+                                {value.subject}
+                              </ThemedText>
+                            </ThemedView>
+                            
+                          )
+                        
+                        )
+                        : <></>
+                    }  
+                </ThemedView>
+                <ThemedView >
+                    { timeTable != undefined ?
+
+                        Object.values(timeTable[4]).map((value:any, i) => 
+                          
+                          (
+                            <ThemedView key={i} style={{padding:10}}>
+                              <ThemedText>
+                                {value.subject}
+                              </ThemedText>
+                            </ThemedView>
+                            
+                          )
+                        
+                        )
+                        : <></>
+                    }  
+                </ThemedView>
+              </>
+               : <></>}
+                
+                
+            </ThemedView>
+              
+         
+            
+            
             <TouchableOpacity onPress={()=>
               navigation.navigate("board")
             }>
-              <ThemedView style={styles.boardList} darkColor='black' lightColor='#F9F9F9'>
+              <ThemedView style={[{marginTop:10},styles.boardList]} darkColor='black' lightColor='#F9F9F9'>
                 <ThemedText style={{fontWeight:"bold"}}>
                   자유 게시판
                 </ThemedText>
