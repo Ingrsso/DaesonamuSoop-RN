@@ -7,7 +7,8 @@ import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/n
 
 import {  differenceInDays, nextFriday } from 'date-fns';
 import { useEffect, useState } from 'react';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Update from "expo-updates";
 
 export default function Main() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -63,6 +64,18 @@ export default function Main() {
                 </ThemedText>
               </ThemedView>
             </TouchableOpacity>
+            <TouchableOpacity onPress={async()=> {
+                await AsyncStorage.setItem('studentId', "");
+                await AsyncStorage.setItem('studentPw', "");
+                Update.reloadAsync()
+              }}>
+              <ThemedView style={[{marginTop:10},styles.boardList]} darkColor='black' lightColor='#F9F9F9'>
+                <Text style={{fontWeight:"bold", color:"red"}}>
+                  로그아웃
+                </Text>
+              </ThemedView>
+            </TouchableOpacity>
+
           </View>
           
          

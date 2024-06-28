@@ -12,6 +12,9 @@ import { ThemedView } from '../components/ThemedView';
 import * as Crypto from 'expo-crypto';
 import useUserStore from '../stores/userIdStore';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -36,6 +39,38 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+
+  useEffect(() => {
+    if (!isLogin) {
+      async function fetchUser() {
+        const id = await AsyncStorage.getItem("studentId")
+        const pw = await AsyncStorage.getItem("studentPw")
+        if (id && pw) {
+          const password = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            String(pw)
+          )
+          fetch('https://daesonamu.kro.kr/api/login', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({"stId":id,"password": password})
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status == 200) {
+              setUserId(data.data.id)
+              setIsLogin(true)
+            }
+          })
+        }
+      }
+      fetchUser()
+    }
+
+  }, [isLogin]);
 
   if (!loaded) {
     return null;
@@ -95,9 +130,13 @@ export default function RootLayout() {
                     .then(response => response.json())
                     .then(data => {
                       if (data.status == 200) {
-                        
                         setUserId(data.data.id)
                         setIsLogin(true)
+                        async function saveUser(id:string, pw:string) {
+                          await AsyncStorage.setItem('studentId', id);
+                          await AsyncStorage.setItem('studentPw', pw);
+                        }
+                        saveUser(id, pw)
                       } else {
                         Alert.alert("로그인 실패", data.message)
                       }

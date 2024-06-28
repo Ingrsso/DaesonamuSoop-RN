@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, TouchableOpacity, RefreshControl } from 'react-native';
+import { StyleSheet, Image, Platform, TouchableOpacity, RefreshControl, useWindowDimensions, useColorScheme } from 'react-native';
 
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
@@ -7,6 +7,7 @@ import Animated from 'react-native-reanimated';
 import { useCallback, useEffect, useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
 import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
+import HTMLView from 'react-native-htmlview';
 
 
 interface TList {
@@ -30,7 +31,8 @@ export default function TabTwoScreen() {
   const [deatilauthor, setDetailauthor] = useState<String>("");
   const [deatilcreatedAt, setDetailcreatedAt] = useState<String>("");
 
-  
+  const colorScheme = useColorScheme();
+
 
   const onDeatilArticle = ({id, title, content, author, createdAt}:TList) => {
     setArticle(true)
@@ -94,6 +96,7 @@ export default function TabTwoScreen() {
   
     return `${start.toLocaleDateString()}`;
   };
+  const { width } = useWindowDimensions();
 
   if (!article) {
     return (
@@ -125,7 +128,28 @@ export default function TabTwoScreen() {
                     {item.title}
                   </ThemedText>
                   <ThemedText style={{fontSize:15}}>
-                    {item.content.replaceAll("<br>","\n")}
+                  { colorScheme === "dark" ?
+                      <HTMLView
+                        stylesheet={{
+                          span:{
+                            marginTop:10,
+                            color:"white",
+                          },
+                        }}
+                        value={`<span>${item.content}</span>`}
+                      /> : 
+                      <HTMLView
+                      stylesheet={{
+                        span:{
+                          marginTop:10,
+                          color:"black",
+                        },
+                      }}
+                      value={`<span>${item.content}</span>`}
+                    /> 
+                      }
+           
+
                   </ThemedText>
                   <ThemedText style={{fontSize:13}}>
                     {item.author} - {elapsedTime(item.createdAt)}
@@ -169,7 +193,26 @@ export default function TabTwoScreen() {
               marginTop: 0,
               fontWeight:"bold"
             }}>
-              {deatilcontent.replaceAll("<br>","\n")}
+               { colorScheme === "dark" ?
+                      <HTMLView
+                        stylesheet={{
+                          span:{
+                            marginTop:10,
+                            color:"white",
+                          },
+                        }}
+                        value={`<span>${deatilcontent}</span>`}
+                      /> : 
+                      <HTMLView
+                      stylesheet={{
+                        span:{
+                          marginTop:10,
+                          color:"black",
+                        },
+                      }}
+                      value={`<span>${deatilcontent}</span>`}
+                    /> 
+                      }
             </ThemedText>
             
             
